@@ -1,0 +1,56 @@
+#!/usr/bin/env ruby
+
+require 'cast'
+require 'trollop'
+
+p = Trollop::Parser.new do
+  version "cast #{Cast::VERSION} (c) Peter Bakkum"
+  banner <<-EOS
+Cast executes remote commands via ssh on servers or groups of servers, as defined by ~/.cast.yml
+
+Usage:
+       cast [options] <servers/groups> <command>
+
+Examples:
+       cast hadoop_cluster df
+       cast -s hadoop_cluster,machine1,machine2 whoami
+
+Your group file (~/.cast.yml by default) should be proper YAML and look like this:
+
+groupname:
+- host1
+- host2
+- host3
+ 
+EOS
+
+  opt :serial, 'Execute commands serially, rather than in parallel over the group', :short => 's'
+  opt :delay, 'Delay in seconds between execution of serial commands (switches to serial mode if defined)', :type => :float
+  opt :groupfile, 'YAML file of server groups', :default => Cast::DEFAULTGROUPS, :short => 'g'
+  opt :list, 'Print out contents of groupfile without executing command', :short => 'l'
+  opt :clusters, 'Print out only groupnames without executing command', :short => 'c'
+end
+
+opt = Trollop::with_standard_exception_handling p do
+  opt = p.parse ARGV
+  raise Trollop::HelpNeeded if ARGV.size < 2 && !opt[:list] && !opt[:clusters]
+  opt
+end
+
+groups = Cast::load_groups opt[:groupfile]
+
+if opt[:list]
+  puts YAML::dump(groups)
+  exit
+end
+
+if opt[:clusters]
+  puts groups.keys.join("\n")
+  exit
+end
+
+cmd = ARGV[1..-1].join(' ')
+hosts = Cast::expand_groups ARGV[0].split(','), groups
+
+Cast::run hosts, cmd, opt[:serial], opt[:delay]
+

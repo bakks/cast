@@ -1,0 +1,10 @@
+group1:
+- host1
+- host2
+- host3
+
+group2:
+- host1
+- host4
+- host5
+
