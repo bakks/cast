@@ -6,7 +6,7 @@ This is a Ruby gem that executes remote commands via ssh on groups of servers de
 
 Grab the gem:
 
-    gem install cast
+    gem install cast-ssh
   
 Create your group file at ~/.cast.yml, like this:
 

@@ -11,9 +11,9 @@ Gem::Specification.new do |gem|
   gem.email = ['pbb7c@virginia.edu']
   gem.executables = ['cast']
   gem.extra_rdoc_files = ['LICENSE.md', 'README.md']
-  gem.files = Dir['LICENSE.md', 'README.md', 'cast.gemspec', 'Gemfile', '.rspec', '.travis.yml', 'lib/**/*', 'bin/*']
+  gem.files = Dir['LICENSE.md', 'README.md', 'cast.gemspec', 'Gemfile', '.rspec', '.travis.yml', 'lib/**/*', 'bin/*', 'spec/**/*']
   gem.homepage = 'http://github.com/bakks/cast'
-  gem.name = 'cast'
+  gem.name = 'cast-ssh'
   gem.rdoc_options = ["--charset=UTF-8"]
   gem.require_paths = ['lib']
   gem.required_rubygems_version = Gem::Requirement.new(">= 1.3.6")
