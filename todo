@@ -1,0 +1,4 @@
+- set ssh path
+- set ssh options
+- fix spec folder inconsistency, move cast.rb up one level
+- test interrupts during execution, fix 100% cpu problem
