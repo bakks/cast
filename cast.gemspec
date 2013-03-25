@@ -3,7 +3,10 @@ require File.expand_path("../lib/cast.rb", __FILE__)
 
 Gem::Specification.new do |gem|
   gem.add_development_dependency 'mocha'
+  gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'autotest-standalone'
+  gem.add_runtime_dependency 'peach'
+  gem.add_runtime_dependency 'trollop'
 
   gem.authors = ["Peter Bakkum"]
   gem.bindir = 'bin'
