@@ -7,7 +7,7 @@ STDOUT.sync = true
 STDERR.sync = true
 
 module Cast
-  VERSION = '0.1.3'
+  VERSION = '0.1.4'
   DEFAULTGROUPS = '~/.cast.yml'
 
   @@mux = Mutex.new
@@ -50,17 +50,17 @@ module Cast
     return hosts.uniq
   end
 
-  def self.run hosts, cmd, serial = false, delay = nil
+  def self.run hosts, cmd, serial = false, delay = nil, ssh = 'ssh'
     if serial or delay
       hosts.each_with_index do |host, i|
-        remote host, cmd
+        remote host, cmd, ssh
         if delay and i < hosts.size - 1
           log "delay for #{delay} seconds"
           sleep delay
         end
       end
     else
-      hosts.peach { |host| remote host, cmd }
+      hosts.peach { |host| remote host, cmd, ssh }
     end
   end
 
