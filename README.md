@@ -65,7 +65,7 @@ You can also access the same functionality from within Ruby. The following metho
 
   Run a command locally, printing stdout and stderr from the command. Returns the process' return value.
 
-* __Cast::_ensure_local__ cmd, prefix = nil -> int
+* __Cast::ensure_local__ cmd, prefix = nil -> int
 
   Run a command locally but raise an exception if it fails.
 
