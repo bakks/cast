@@ -7,7 +7,7 @@ STDOUT.sync = true
 STDERR.sync = true
 
 module Cast
-  VERSION = '0.1.2'
+  VERSION = '0.1.3'
   DEFAULTGROUPS = '~/.cast.yml'
 
   @@mux = Mutex.new
@@ -64,21 +64,26 @@ module Cast
     end
   end
 
-  def self.remote host, cmd
-    fullcmd = "ssh #{host} '#{cmd}'"
+  def self.remote host, cmd, ssh = 'ssh'
+    fullcmd = "#{ssh} #{host} '#{cmd}'"
     log "running #{fullcmd}"
     local fullcmd, host
+  end
+
+  def self.ensure_local cmd, prefix = nil
+    r = local cmd, prefix
+    raise "command failed: #{cmd}" unless r == 0
+    return r
   end
 
   def self.local cmd, prefix = nil
     r = nil
 
     Open3.popen3 cmd do |stdin, stdout, stderr, wait_thr|
-      @@pids << wait_thr[:pid]
-
+      @@pids << wait_thr.pid
       stdin.close
 
-      while true
+      while wait_thr.status
         streams = []
         streams << stdout if stdout
         streams << stderr if stderr
@@ -90,6 +95,7 @@ module Cast
           if stream == stdout
             line = stream.gets
             if line == nil
+              stdout.close
               stdout = nil
               next
             end
@@ -98,6 +104,7 @@ module Cast
           elsif stream == stderr
             line = stream.gets
             if line == nil
+              stderr.close
               stderr = nil
               next
             end
@@ -105,14 +112,13 @@ module Cast
 
           else raise "unrecognized stream #{stream}"
           end
-
         end
       end
 
       r = wait_thr.value
     end
 
-    return r
+    return r.exitstatus
   end
 
 end

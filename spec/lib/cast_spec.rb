@@ -1,6 +1,21 @@
 require 'spec_helper'
 
 describe Cast do
+  it 'should return the command output' do
+    r = Cast::local 'true'
+    r.should == 0
+
+    r = Cast::local 'false'
+    r.should == 1
+  end
+
+  it 'should ensure local commands finish' do
+    r = Cast::ensure_local 'true'
+    r.should == 0
+
+    expect { Cast::ensure_local 'false'}.to raise_error
+  end
+
   it 'should load groups' do
     groups = Cast::load_groups 'spec/test.yml'
     groups.size.should == 2

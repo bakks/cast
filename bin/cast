@@ -33,6 +33,7 @@ EOS
   opt :groupfile, 'YAML file of server groups', :default => Cast::DEFAULTGROUPS, :short => 'g'
   opt :list, 'Print out contents of groupfile without executing command', :short => 'l'
   opt :clusters, 'Print out only groupnames without executing command', :short => 'c'
+  opt :ssh, 'SSH command to run', :default => 'ssh'
 end
 
 opt = Trollop::with_standard_exception_handling p do
