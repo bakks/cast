@@ -81,3 +81,6 @@ You can also access the same functionality from within Ruby. The following metho
 
   Takes an array of groups and hosts, and expands the groups into their constituents given the input group hash. If no hash is given, use the value loaded most recently in load_groups. Returns an array of hostnames.
 
+#### TODO
+
+* Accept env vars for local and remote commands
