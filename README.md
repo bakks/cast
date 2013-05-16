@@ -84,3 +84,5 @@ You can also access the same functionality from within Ruby. The following metho
 #### TODO
 
 * Accept env vars for local and remote commands
+* Check for duplicate groups in groupfile
+
