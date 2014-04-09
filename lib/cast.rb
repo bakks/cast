@@ -7,7 +7,7 @@ STDOUT.sync = true
 STDERR.sync = true
 
 module Cast
-  VERSION = '0.1.4'
+  VERSION = '0.1.5'
   DEFAULTGROUPS = '~/.cast.yml'
 
   @@mux = Mutex.new
@@ -89,7 +89,8 @@ module Cast
         streams << stderr if stderr
         break unless streams.size > 0
 
-        ios = IO.select streams
+        ios = IO.select streams, nil, nil, 1
+        next unless ios
 
         ios.first.each do |stream|
           if stream == stdout
