@@ -76,13 +76,16 @@ The following methods are available:
 
   Run a remote command on the given host, sending output to stdout.
 
-* __Cast::local__ cmd, prefix = nil -> int
+* __Cast::local__ cmd, options = {} -> int
 
   Run a command locally, printing stdout and stderr from the command. Returns the process' return value.
 
-* __Cast::ensure_local__ cmd, prefix = nil -> int
-
-  Run a command locally but raise an exception if it fails.
+  You can use the following options:
+  ```
+  :ensure              - Raise exceptions if the command returns a non-zero error code.
+  :prefix              - Prefix to use on lines when printing stdout/stderr.
+  :clean_bundler_env   - Use a clean bundler environment when running the command.
+  ```
 
 * __Cast::log__ msg, source = 'cast', stream = $stdout
 

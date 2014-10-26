@@ -2,6 +2,7 @@ require 'thread'
 require 'open3'
 require 'yaml'
 require 'peach'
+require 'bundler'
 
 STDOUT.sync = true
 STDERR.sync = true
@@ -76,10 +77,18 @@ module Cast
     return r
   end
 
-  def self.local cmd, prefix = nil
+  def self.local cmd, options = {}
+    prefix = nil
+
+    if options.is_a? String
+      prefix = options # this is for backwards compatibility
+    elsif options[:prefix]
+      prefix = options[:prefix]
+    end
+
     r = nil
 
-    Open3.popen3 cmd do |stdin, stdout, stderr, wait_thr|
+    blk = Proc.new do |stdin, stdout, stderr, wait_thr|
       @@pids << wait_thr.pid
       stdin.close
 
@@ -116,6 +125,20 @@ module Cast
       end
 
       r = wait_thr.value
+    end
+
+    if options[:clean_bundler_env]
+      Bundler.with_clean_env do
+        Open3.popen3(cmd, &blk)
+      end
+    else
+      Open3.popen3(cmd, &blk)
+    end
+
+    if options[:ensure]
+      unless r.exitstatus == 0
+        raise "command failed: #{cmd}"
+      end
     end
 
     return r.exitstatus
