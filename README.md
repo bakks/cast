@@ -6,39 +6,47 @@ This is a Ruby gem that executes remote commands via ssh on groups of servers de
 
 Grab the gem:
 
-    gem install cast-ssh
+```bash
+gem install cast-ssh
+```
 
 Create your group file at ~/.cast.yml, like this:
 
-    group1:
-    - host1
-    - host2
-    - host3
+```yaml
+group1:
+- host1
+- host2
+- host3
 
-    group2:
-    - host1
-    - host4
-    - host5
+group2:
+- host1
+- host4
+- host5
+```
 
 Run commands in your shell:
 
-    cast group1 echo test
-    cast group1,group2 sudo whoami
-    cast -s group1,host4 df -h
+```bash
+cast group1 echo test
+cast group1,group2 sudo whoami
+cast -s group1,host4 df -h
+```
 
 The output from the second command will look something like this:
 
-    [cast] loading groups from ~/.cast.yml
-    [cast] running ssh host1 'sudo whoami'
-    [cast] running ssh host2 'sudo whoami'
-    [cast] running ssh host3 'sudo whoami'
-    [cast] running ssh host4 'sudo whoami'
-    [cast] running ssh host5 'sudo whoami'
-    [host3] root
-    [host1] root
-    [host2] root
-    [host5] root
-    [host4] root
+```
+[cast] loading groups from ~/.cast.yml
+[cast] running ssh host1 'sudo whoami'
+[cast] running ssh host2 'sudo whoami'
+[cast] running ssh host3 'sudo whoami'
+[cast] running ssh host4 'sudo whoami'
+[cast] running ssh host5 'sudo whoami'
+[host3] root
+[host1] root
+[host2] root
+[host5] root
+[host4] root
+```
 
 Note that the commands are run in parallel, so the output may be out of order.
 
@@ -55,7 +63,14 @@ Note that the commands are run in parallel, so the output may be out of order.
 
 ### API
 
-You can also access the same functionality from within Ruby. The following methods are available:
+You can also access the same functionality from within Ruby.
+
+To include Cast in your code do:
+```ruby
+require 'cast'
+```
+
+The following methods are available:
 
 * __Cast::remote__ host, cmd
 
@@ -83,6 +98,7 @@ You can also access the same functionality from within Ruby. The following metho
 
 #### TODO
 
-* Accept env vars for local and remote commands
-* Check for duplicate groups in groupfile
+* Accept env vars for local and remote commands.
+* Check for duplicate groups in groupfile.
+* Propogate local signals to remote commands.
 
