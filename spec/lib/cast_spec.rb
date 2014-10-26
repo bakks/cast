@@ -3,51 +3,50 @@ require 'spec_helper'
 describe Cast do
   it 'should return the command output' do
     r = Cast::local 'true'
-    r.should == 0
+    expect(r).to eq(0)
 
     r = Cast::local 'false'
-    r.should == 1
+    expect(r).to eq(1)
   end
 
   it 'should ensure local commands finish' do
-    r = Cast::ensure_local 'true'
-    r.should == 0
-
-    expect { Cast::ensure_local 'false'}.to raise_error
+    r = Cast::local 'true', {:ensure => true}
+    expect(r).to eq(0)
+    expect { Cast::local('false', {:ensure => true}) }.to raise_error
   end
 
   it 'should load groups' do
     groups = Cast::load_groups 'spec/test.yml'
-    groups.size.should == 2
-    groups['group1'].size.should == 3
-    groups['group1'][0].should == 'host1'
+    expect(groups.size).to eq(2)
+    expect(groups['group1'].size).to eq(3)
+    expect(groups['group1'][0]).to eq('host1')
   end
 
   it 'should expand groups' do
     groups = Cast::load_groups 'spec/test.yml'
     hosts = Cast::expand_groups ['group1'], groups
-    hosts.size.should == 3
-    hosts[0].should == 'host1'
-    hosts[1].should == 'host2'
-    hosts[2].should == 'host3'
+    expect(hosts.size).to eq(3)
+    expect(hosts[0]).to eq('host1')
+    expect(hosts[1]).to eq('host2')
+    expect(hosts[2]).to eq('host3')
 
     hosts = Cast::expand_groups ['group1', 'group2']
-    hosts.size.should == 5
-    hosts[0].should == 'host1'
-    hosts[1].should == 'host2'
-    hosts[2].should == 'host3'
-    hosts[3].should == 'host4'
-    hosts[4].should == 'host5'
+    expect(hosts.size).to eq(5)
+    expect(hosts[0]).to eq('host1')
+    expect(hosts[1]).to eq('host2')
+    expect(hosts[2]).to eq('host3')
+    expect(hosts[3]).to eq('host4')
+    expect(hosts[4]).to eq('host5')
 
     hosts = Cast::expand_groups ['host10', 'group1', 'host11', 'group2']
-    hosts.size.should == 7
-    hosts[0].should == 'host10'
-    hosts[1].should == 'host1'
-    hosts[2].should == 'host2'
-    hosts[3].should == 'host3'
-    hosts[4].should == 'host11'
-    hosts[5].should == 'host4'
-    hosts[6].should == 'host5'
+    expect(hosts.size).to eq(7)
+    expect(hosts[0]).to eq('host10')
+    expect(hosts[1]).to eq('host1')
+    expect(hosts[2]).to eq('host2')
+    expect(hosts[3]).to eq('host3')
+    expect(hosts[4]).to eq('host11')
+    expect(hosts[5]).to eq('host4')
+    expect(hosts[6]).to eq('host5')
   end
 end
 
