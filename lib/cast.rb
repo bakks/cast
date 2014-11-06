@@ -71,20 +71,9 @@ module Cast
     local fullcmd, host
   end
 
-  def self.ensure_local cmd, prefix = nil
-    r = local cmd, prefix
-    raise "command failed: #{cmd}" unless r == 0
-    return r
-  end
-
   def self.local cmd, options = {}
-    prefix = nil
-
-    if options.is_a? String
-      prefix = options # this is for backwards compatibility
-    elsif options[:prefix]
-      prefix = options[:prefix]
-    end
+    options = {} if options == nil
+    prefix = options[:prefix]
 
     r = nil
 
