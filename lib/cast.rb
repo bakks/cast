@@ -8,7 +8,7 @@ STDOUT.sync = true
 STDERR.sync = true
 
 module Cast
-  VERSION = '0.1.5'
+  VERSION = '0.1.6'
   DEFAULTGROUPS = '~/.cast.yml'
 
   @@mux = Mutex.new
