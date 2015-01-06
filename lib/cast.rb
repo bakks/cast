@@ -68,7 +68,7 @@ module Cast
   def self.remote host, cmd, ssh = 'ssh'
     fullcmd = "#{ssh} #{host} '#{cmd}'"
     log "running #{fullcmd}"
-    local fullcmd, host
+    local fullcmd
   end
 
   def self.local cmd, options = {}
