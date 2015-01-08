@@ -8,7 +8,7 @@ STDOUT.sync = true
 STDERR.sync = true
 
 module Cast
-  VERSION = '0.1.6'
+  VERSION = '0.1.7'
   DEFAULTGROUPS = '~/.cast.yml'
 
   @@mux = Mutex.new
@@ -68,7 +68,7 @@ module Cast
   def self.remote host, cmd, ssh = 'ssh'
     fullcmd = "#{ssh} #{host} '#{cmd}'"
     log "running #{fullcmd}"
-    local fullcmd
+    local fullcmd, {:prefix => host}
   end
 
   def self.local cmd, options = {}
