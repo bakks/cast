@@ -40,11 +40,9 @@ The output from the second command will look something like this:
 [cast] running ssh host2 'sudo whoami'
 [cast] running ssh host3 'sudo whoami'
 [cast] running ssh host4 'sudo whoami'
-[cast] running ssh host5 'sudo whoami'
 [host3] root
 [host1] root
 [host2] root
-[host5] root
 [host4] root
 ```
 
