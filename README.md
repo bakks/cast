@@ -24,8 +24,12 @@ group2:
 - host5
 ```
 
-Run commands in your shell:
+Run commands in your shell using this pattern:
+```bash
+cast [<flags>] <target> <command>
+```
 
+For example:
 ```bash
 cast group1 echo test
 cast group1,group2 sudo whoami
