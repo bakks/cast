@@ -33,7 +33,7 @@ For example:
 ```bash
 cast group1 echo test
 cast group1,group2 sudo whoami
-cast -s group1,host4 df -h
+cast -s group1,host4 "df -h"
 ```
 
 The output from the second command will look something like this:
