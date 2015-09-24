@@ -34,6 +34,7 @@ EOS
   opt :list, 'Print out contents of groupfile without executing command', :short => 'l'
   opt :clusters, 'Print out only groupnames without executing command', :short => 'c'
   opt :ssh, 'SSH command to run', :default => 'ssh'
+  opt :strict, 'Return a non-zero exit code if ANY of the ssh commands exit non-zero', :short => 't'
 end
 
 opt = Trollop::with_standard_exception_handling p do
@@ -57,5 +58,8 @@ end
 cmd = ARGV[1..-1].join(' ')
 hosts = Cast::expand_groups ARGV[0].split(','), groups
 
-Cast::run hosts, cmd, opt[:serial], opt[:delay], opt[:ssh]
+result = Cast::run hosts, cmd, opt[:serial], opt[:delay], opt[:ssh], opt[:strict]
+if opt[:strict] and not result
+  exit 1
+end
 

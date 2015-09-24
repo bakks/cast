@@ -51,24 +51,32 @@ module Cast
     return hosts.uniq
   end
 
-  def self.run hosts, cmd, serial = false, delay = nil, ssh = 'ssh'
+  def self.run hosts, cmd, serial = false, delay = nil, ssh = 'ssh', strict = false
+    success = true
     if serial or delay
       hosts.each_with_index do |host, i|
-        remote host, cmd, ssh
+        exitCode = remote host, cmd, ssh
+        if strict
+          success &= (exitCode == 0)
+        end
         if delay and i < hosts.size - 1
           log "delay for #{delay} seconds"
           sleep delay
         end
       end
     else
-      hosts.peach { |host| remote host, cmd, ssh }
+      exitCodes = hosts.pmap { |host| remote host, cmd, ssh }
+      if strict
+        success = (exitCodes.reduce(:+) == 0)
+      end
     end
+    return success
   end
 
   def self.remote host, cmd, ssh = 'ssh'
     fullcmd = "#{ssh} #{host} '#{cmd}'"
     log "running #{fullcmd}"
-    local fullcmd, {:prefix => host}
+    return local fullcmd, {:prefix => host}
   end
 
   def self.local cmd, options = {}
