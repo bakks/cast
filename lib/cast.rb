@@ -57,7 +57,7 @@ module Cast
       hosts.each_with_index do |host, i|
         exitCode = remote host, cmd, ssh
         if strict
-          success &= (exitCode == 0)
+          success &&= (exitCode == 0)
         end
         if delay and i < hosts.size - 1
           log "delay for #{delay} seconds"
