@@ -54,16 +54,16 @@ Note that the commands are run in parallel, so the output may be out of order.
 
 ### Options
 
-             --serial, -s:   Execute commands serially, rather than in parallel over the group
-          --delay, -d <f>:   Delay in seconds between execution of serial commands (switches to serial mode if defined)
-      --groupfile, -g <s>:   YAML file of server groups (default: ~/.cast.yml)
-               --list, -l:   Print out contents of groupfile without executing command
-           --clusters, -c:   Print out only groupnames without executing command
-            --ssh, -h <s>:   SSH command to run (default: ssh)
-             --strict, -t:   Return a non-zero exit code if ANY of the ssh commands exit non-zero
-  --controlfolder, -o <s>:   Path to look in for any ControlMaster tunnels (default: ~/.ssh/)
-            --version, -v:   Print version and exit
-               --help, -e:   Show this message
+               --serial, -s:   Execute commands serially, rather than in parallel over the group
+            --delay, -d <f>:   Delay in seconds between execution of serial commands (switches to serial mode if defined)
+        --groupfile, -g <s>:   YAML file of server groups (default: ~/.cast.yml)
+                 --list, -l:   Print out contents of groupfile without executing command
+             --clusters, -c:   Print out only groupnames without executing command
+              --ssh, -h <s>:   SSH command to run (default: ssh)
+               --strict, -t:   Return a non-zero exit code if ANY of the ssh commands exit non-zero
+    --controlfolder, -o <s>:   Path to look in for any ControlMaster tunnels (default: ~/.ssh/)
+              --version, -v:   Print version and exit
+                 --help, -e:   Show this message
 
 
 ### API
