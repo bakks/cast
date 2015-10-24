@@ -8,7 +8,7 @@ STDOUT.sync = true
 STDERR.sync = true
 
 module Cast
-  VERSION = '0.1.8'
+  VERSION = '0.1.9'
   DEFAULTGROUPS = '~/.cast.yml'
 
   @@mux = Mutex.new
@@ -51,11 +51,14 @@ module Cast
     return hosts.uniq
   end
 
-  def self.run hosts, cmd, serial = false, delay = nil, ssh = 'ssh', strict = false
+  def self.run hosts, cmd, serial = false, delay = nil, ssh = 'ssh', strict = false, controlfolder = nil
+    if controlfolder != nil
+      controlfolder = File.expand_path(controlfolder)
+    end
     success = true
     if serial or delay
       hosts.each_with_index do |host, i|
-        exitCode = remote host, cmd, ssh
+        exitCode = remote host, cmd, ssh, controlfolder
         if strict
           success &&= (exitCode == 0)
         end
@@ -65,7 +68,7 @@ module Cast
         end
       end
     else
-      exitCodes = hosts.pmap { |host| remote host, cmd, ssh }
+      exitCodes = hosts.pmap { |host| remote host, cmd, ssh, controlfolder }
       if strict
         success = (exitCodes.reduce(:+) == 0)
       end
@@ -73,8 +76,13 @@ module Cast
     return success
   end
 
-  def self.remote host, cmd, ssh = 'ssh'
-    fullcmd = "#{ssh} #{host} '#{cmd}'"
+  def self.remote host, cmd, ssh = 'ssh', controlfolder = nil
+    controlpath = ""
+    if controlfolder != nil and File.exists?("#{controlfolder}/#{host}-controlmaster")
+      controlpath = "-o 'ControlPath=#{controlfolder}/#{host}-controlmaster'"
+    end
+
+    fullcmd = "#{ssh} #{controlpath} #{host} '#{cmd}'"
     log "running #{fullcmd}"
     return local fullcmd, {:prefix => host}
   end

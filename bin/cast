@@ -35,6 +35,7 @@ EOS
   opt :clusters, 'Print out only groupnames without executing command', :short => 'c'
   opt :ssh, 'SSH command to run', :default => 'ssh'
   opt :strict, 'Return a non-zero exit code if ANY of the ssh commands exit non-zero', :short => 't'
+  opt :controlfolder, 'Path to look in for any ControlMaster tunnels', :short => 'o', :default => '~/.ssh/'
 end
 
 opt = Trollop::with_standard_exception_handling p do
@@ -58,7 +59,7 @@ end
 cmd = ARGV[1..-1].join(' ')
 hosts = Cast::expand_groups ARGV[0].split(','), groups
 
-result = Cast::run hosts, cmd, opt[:serial], opt[:delay], opt[:ssh], opt[:strict]
+result = Cast::run hosts, cmd, opt[:serial], opt[:delay], opt[:ssh], opt[:strict], opt[:controlfolder]
 if opt[:strict] and not result
   exit 1
 end
